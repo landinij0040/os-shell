@@ -36,7 +36,7 @@ f)	Also run commands that name a program anywhere in the path.
 def f_path_parameters(input):
     split_input = input.decode().split()
     try:
-        os.execve(split_input[0], [split_input[0].split('/')[-1], 'shell.py'], os.environ) # try to exec program
+        os.execve(split_input[0], [split_input[0].split('/')[-1], split_input[1:]], os.environ) # try to exec program
     except FileNotFoundError:             # ...expected
         os.write(2, ("Could not exec %s\n" % input[0]).encode())
         sys.exit(1)
@@ -69,7 +69,7 @@ d)	Support background tasks,
 '''     
 def no_wait_fork(input):
     rc = os.fork()
-    if(is_valid_path):
+    if(is_valid_path(input)):
         if rc == 0:
             f_path_parameters(input)
     else:      
